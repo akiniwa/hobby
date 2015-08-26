@@ -79,9 +79,4 @@ def plot6():
     plt.plot(X, Y1, c='k', lw=3.)
     plt.show()
 
-# plot1()
-# plot2()
-# plot3()
-# plot4()
-# plot5()
-plot6()
+plot2()

@@ -3,6 +3,7 @@
 from __future__ import division
 from nltk.book import *
 from nltk.probability import FreqDist
+from nltk.util import bigrams
 
 def fun01():
     """print text"""
@@ -68,4 +69,40 @@ def fun10():
     # print vocabulary1[:50]
     fdist1.plot(50, cumulative=True)
 
-fun10()
+def fun11():
+    """selection of words"""
+    V = set(text1)
+    long_words = [word for word in V if len(word) > 15]
+    print sorted(long_words)
+
+def fun12():
+    """words longer than 7 chars and occur more than 7 times"""
+    fdist1 = FreqDist(text5)
+    print sorted([w for w in set(text5) if len(w) > 7 and fdist1[w] > 7])
+
+def fun13():
+    """collocations and bigrams"""
+    print list(bigrams(['more', 'is', 'said', 'than', 'done']))
+    print text4.collocations()
+    print text8.collocations()
+
+def fun14():
+    """counting other things"""
+    # print [len(w) for w in text1]
+    fdist1 = FreqDist([len(w) for w in text1])
+    # print fdist1.keys()
+    # print fdist1.items()
+    # word length 3 => 50223
+    print fdist1[3]
+    print fdist1.max()
+    # frequency 20%
+    print fdist1.freq(3)
+
+def fun15():
+    """operating on every element"""
+    # print [w.upper() for w in text1]
+    print len(set(text1))
+    print len(set([word.lower() for word in text1]))
+    print len(set([word.lower() for word in text1 if word.isalpha()]))
+
+fun15()

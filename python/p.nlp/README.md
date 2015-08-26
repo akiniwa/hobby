@@ -1,6 +1,8 @@
 natural language processing with python
 ---------------------------------------
 
+### language processing task
+
 | language processing task   | nltk modules                | functionality                                                |
 | -------------------------- | --------------------------- | ------------------------------------------------------------ |
 | accessing corpora          | nltk.corpus                 | standardized interfaces to corpora and lexicons              |
@@ -16,7 +18,7 @@ natural language processing with python
 | applications               | nltk.app, nltk.chat         | graphical concordancer, parsers, wordnet browser, chatbots   |
 | linguistic fieldwork       | nltk.toolbox                | manipulate data in sil toolbox format                        |
 
-| 语言处理任务 | 功能描述
+| 语言处理任务 | 功能描述 |
 | --- | --- |
 | 获取语料库 | 语料库和词典的标准接口 |
 | 字符串处理 | 分词、句子分解、提取主干 |
@@ -30,3 +32,20 @@ natural language processing with python
 | 概率与估计 | 频率分布、平滑概率分布 |
 | 应用 | 图形化的关键词排序、分词器、wordnet 查看器、聊天机器人 |
 | 语言学领域的工作 | 处理 sil 工具箱格式的数据 |
+
+### functions defined for nltk's frequency distributions
+
+| example                     | description                                                   |
+| --------------------------- | ------------------------------------------------------------- |
+| fdist = FreqDist(samples)   | create a frequency distribution containing the given samples  |
+| fdist.inc(samples)          | increment the count for this samples                          |
+| fdist['monstrous']          | count of the number of times a given sample occurred          |
+| fdist.freq('monstrous')     | frequency of a given sample                                   |
+| fdist.N()                   | total number of samples                                       |
+| fdist.keys()                | the samples sorted in order of decreasing frequency           |
+| for sample in fdist         | iterate over the samples in order of decreasing frequency     |
+| fdist.max()                 | sample with the greatest count                                |
+| fdist.tabulate()            | tabulate the frequency distribution                           |
+| fdist.plot()                | graphical plot of the frequency distribution                  |
+| fdist.plot(cumulative=True) | cumulative plot of the frequency distribution                 |
+| fdist1 < fdist2             | test if samples in fdist1 occur less frequently than in fdis2 |
