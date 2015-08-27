@@ -3,7 +3,7 @@
 
 import nltk
 from nltk import Text
-from nltk.corpus import gutenberg, webtext, nps_chat, brown, reuters
+from nltk.corpus import gutenberg, webtext, nps_chat, brown, reuters, inaugural, udhr
 from nltk.probability import FreqDist
 # from nltk.book import *
 
@@ -82,4 +82,46 @@ def fun10():
     print reuters.fileids('barley')[:50]
     print reuters.fileids(['barley', 'corn'])[:50]
 
-fun10()
+def fun11():
+    """inaugural address corpus"""
+    print inaugural.fileids()
+    print [fileid[:4] for fileid in inaugural.fileids()]
+
+    cfd = nltk.ConditionalFreqDist((target, fileid[:4]) \
+        for fileid in inaugural.fileids() \
+        for w in inaugural.words(fileid) \
+        for target in ['america', 'citizen'] \
+        if w.lower().startswith(target))
+    cfd.plot()
+
+def fun12():
+    """annotated text corpus"""
+    # http://www.nltk.org/data
+    # http://www.nltk.org/howto
+    pass
+
+def fun13():
+    """corpora in other languages"""
+    # print nltk.corpus.cess_esp.words()[:50]
+    # print nltk.corpus.floresta.words()[:50]
+    # print nltk.corpus.indian.words('hindi.pos')[:50]
+    # print nltk.corpus.udhr.fileids()
+    # print nltk.corpus.udhr.words('Javanese-Latin1')[11:50]
+    for word in nltk.corpus.udhr.words('Chinese_Mandarin-GB2312'):
+        print word.encode('utf-8'),
+
+def fun14():
+    """cfd plot"""
+    languages = ['Chickasaw', 'English', 'German_Deutsch', \
+        'Greenlandic_Inuktikut', 'Hungarian_Magyar', 'Ibibio_Efik']
+    cfd = nltk.ConditionalFreqDist((lang, len(word)) \
+        for lang in languages \
+        for word in udhr.words(lang + '-Latin1'))
+    cfd.plot(cumulative=True)
+
+def fun15():
+    """freq dist plot"""
+    raw_text = udhr.raw('Chinese_Mandarin-GB2312')
+    FreqDist(raw_text).plot()
+
+fun15()
