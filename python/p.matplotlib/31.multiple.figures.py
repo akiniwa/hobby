@@ -1,6 +1,7 @@
 """working with figures"""
 
 import numpy as np
+import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 
 def plot1():
@@ -79,4 +80,51 @@ def plot6():
     plt.plot(X, Y1, c='k', lw=3.)
     plt.show()
 
-plot2()
+def plot7():
+    """inserting subfigures"""
+    X = np.linspace(-6, 6, 1024)
+    Y = np.sinc(X)
+
+    X_detail = np.linspace(-3, 3, 1024)
+    Y_detail = np.sinc(X_detail)
+
+    plt.plot(X, Y, c='k')
+    sub_axes = plt.axes([.6, .6, .25, .25])
+    sub_axes.plot(X_detail, Y_detail, c='k')
+    plt.setp(sub_axes)
+    plt.show()
+
+def plot8():
+    """using a logarithmic scale"""
+    X = np.linspace(1, 10, 1024)
+    plt.yscale('log')
+    plt.plot(X, X, c='k', lw=2., label=r'$f(x)=x$')
+    plt.plot(X, 10 ** X, c='.75', ls='--', lw=2., label=r'$f(x)=e^x$')
+    plt.plot(X, np.log(X), c='.75', lw=2., label=r'$f(x)=\log(x)$')
+    plt.legend()
+    plt.show()
+
+def plot9():
+    """symlog"""
+    X = np.linspace(-100, 100, 4096)
+    plt.xscale('symlog', linthreshx=6.)
+    plt.plot(X, np.sinc(X), c='k')
+    plt.show()
+
+def plot10():
+    """using polar coordinates"""
+    T = np.linspace(0, 2 * np.pi, 1024)
+    plt.axes(polar=True)
+    plt.plot(T, 1. + .25 * np.sin(16 * T), c='k')
+    plt.show()
+
+def plot11():
+    """ploar"""
+    ax = plt.axes(polar=True)
+    theta = np.linspace(0, 2 * np.pi, 8, endpoint=False)
+    radius = .25 + .75 * np.random.random(size=len(theta))
+    points = np.vstack((theta, radius)).transpose()
+    plt.gca().add_patch(patches.Polygon(points, color='.75'))
+    plt.show()
+
+plot11()
