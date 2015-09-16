@@ -1,5 +1,7 @@
 var redis = require("redis");
 var client = redis.createClient();
+client.set("article:100:headline", "hqlgree2's book one");
+client.set("article:135:headline", "hqlgree2's book two");
 
 function upVote(id){
     var key = "article:" + id + ":votes";
