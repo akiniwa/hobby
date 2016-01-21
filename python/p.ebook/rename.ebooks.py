@@ -8,17 +8,18 @@ import shutil
 
 def rename_ebooks(path):
     '''rename_ebooks'''
-    for fullname in glob.glob(r'{}*.pdf'.format(path)):
+    for fullname in glob.glob(os.path.join(path, '*.pdf')):
         (_, filename) = os.path.split(fullname)
-        filename = filename \
-                .replace(',', '.') \
-                .replace('-', '.') \
-                .replace('_', '.') \
-                .replace(' ', '.') \
-                .lower()
-        newname = os.path.join(path, filename)
+        newname = filename     \
+            .replace(',', '.') \
+            .replace('-', '.') \
+            .replace('_', '.') \
+            .replace(' ', '.') \
+            .lower()
         if fullname != newname:
-            print filename
+            newname = os.path.join(path, newname)
+            print newname
             shutil.move(fullname, newname)
 
-rename_ebooks('/Users/hqlgree2/Downloads/')
+# rename_ebooks(r'D:/j.ebook/zzz/')
+rename_ebooks(r'/Users/hqlgree2/Downloads/')
