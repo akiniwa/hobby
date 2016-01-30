@@ -14,6 +14,8 @@ import StringIO
 # disable 'test'
 # enable 'test'
 
+data_file = 'hbase.dat'
+
 SIO = StringIO.StringIO()
 DATE = '20160124'
 
@@ -39,7 +41,7 @@ def gen_all():
                     )
                 SIO.write(put)
                 SIO.write('\n')
-    with open('hbase.cmd', 'wt') as file_o:
+    with open(data_file, 'wt') as file_o:
         file_o.write(SIO.getvalue())
 
 
@@ -47,7 +49,7 @@ def gen_one():
     """gen_one"""
 
     indicator = 0
-    for store in range(10000, 11111):
+    for store in range(10000, 10001):
         for minute in range(1, 1441):
             # put 'test', '201601240000100', 'cf:0001', '0001'
             put = "put 'test', '{}{}{}', 'cf:{}', '{}'"\
@@ -58,7 +60,9 @@ def gen_one():
             SIO.write(put)
             SIO.write('\n')
 
-    with open('hbase.cmd', 'wt') as file_o:
+    with open(data_file, 'wt') as file_o:
         file_o.write(SIO.getvalue())
 
-gen_one()
+
+if __name__ == '__main__':
+    gen_one()
