@@ -15,11 +15,12 @@ def rename_ebooks(path):
             .replace('-', '.') \
             .replace('_', '.') \
             .replace(' ', '.') \
+            .replace('..', '.') \
             .lower()
         if fullname != newname:
             newname = os.path.join(path, newname)
             print newname
             shutil.move(fullname, newname)
 
-# rename_ebooks(r'D:/j.ebook/zzz/')
-rename_ebooks(r'/Users/hqlgree2/Downloads/')
+rename_ebooks(r'D:/j.ebook/lang/java/')
+# rename_ebooks(r'/Users/hqlgree2/Downloads/')
