@@ -22,5 +22,5 @@ def rename_ebooks(path):
             print newname
             shutil.move(fullname, newname)
 
-rename_ebooks(r'D:/j.ebook/lang/java/')
+rename_ebooks(r'D:/j.ebook/zzz/')
 # rename_ebooks(r'/Users/hqlgree2/Downloads/')
