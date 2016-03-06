@@ -51,9 +51,4 @@ digraph demo {
     { rank = same;
         "Q", "R", "S";
     };
-    kafka -> A;
-    kafka -> B;
-    kafka -> E;
-    kafka -> C;
-    kafka -> D;
 }
