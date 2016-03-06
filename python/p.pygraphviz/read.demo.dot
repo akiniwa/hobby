@@ -1,0 +1,59 @@
+digraph demo {
+    ranksep=.75; size = "7.5,7.5";
+
+    subgraph line1 {
+        A [shape=box];
+        B [shape=box];
+        A -> G -> L -> N -> P -> Q -> redis;
+        B -> H -> L;
+        label = "process line 1";
+    }
+
+    subgraph line2 {
+        C [shape=box];
+        D [shape=box];
+        C -> I -> M -> O -> R -> redis;
+        D -> J -> M;
+        label = "process line 2";
+    }
+
+    subgraph line3 {
+        E [shape=box];
+        redis [shape=component];
+        E -> K -> S -> redis;
+        label = "process line 3";
+    }
+
+    /*subgraph kafka {
+        kafka -> A;
+        kafka -> B;
+        kafka -> E;
+        kafka -> C;
+        kafka -> D;
+        label = "kafka";
+    }*/
+
+    { rank = same;
+        "A", "B", "C", "D", "E";
+    };
+
+    { rank = same;
+        "G", "H", "I", "J", "K";
+    };
+
+    { rank = same;
+        "L", "M";
+    };
+    { rank = same;
+        "N", "O";
+    };
+
+    { rank = same;
+        "Q", "R", "S";
+    };
+    kafka -> A;
+    kafka -> B;
+    kafka -> E;
+    kafka -> C;
+    kafka -> D;
+}
