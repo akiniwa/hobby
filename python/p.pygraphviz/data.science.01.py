@@ -53,13 +53,13 @@ sorted(num_friends_by_id,
        reverse=True)
 
 
-def to_png():
-    """to_png"""
-    G = pgv.AGraph()
+def save_to(fmt):
+    """save_to"""
+    G = pgv.AGraph(directed=False)
     for friendship in friendships:
         G.add_edge(*friendship)
     G.layout(prog='dot')
-    G.draw('data.science.01.png')
+    G.draw('data.science.01.{}'.format(fmt))
 
 
 def friends_of_friend_ids_bad(user):
@@ -68,10 +68,12 @@ def friends_of_friend_ids_bad(user):
             for friend in user['friends']
             for foad in friend['friends']]
 
+save_to('png')
+save_to('dot')
 # [0, 2, 3, 0, 1, 3]
 # include 0, 3 twice
-print friends_of_friend_ids_bad(users[0])
+# print friends_of_friend_ids_bad(users[0])
 
-print [friend['id'] for friend in users[0]['friends']]
-print [friend['id'] for friend in users[1]['friends']]
-print [friend['id'] for friend in users[2]['friends']]
+# print [friend['id'] for friend in users[0]['friends']]
+# print [friend['id'] for friend in users[1]['friends']]
+# print [friend['id'] for friend in users[2]['friends']]

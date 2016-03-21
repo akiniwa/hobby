@@ -1,0 +1,39 @@
+digraph demo {
+    ranksep=.5;
+    /* size = "7.5,7.5";*/
+    node [fontname="微软雅黑",size="16,16",labeljust=l];
+
+    000 [label="客户端写入"];
+    001 [label="存入 MemStore"];
+    002 [label="写满 MemStore"];
+    003 [label="flush => StoreFile"];
+    004 [label="达到 SF 压缩阈值"];
+    005 [label="执行 Compact 合并"];
+    006 [label="SF1 ... SFN => SF"];
+    007 [label="同时版本合并数据删除"];
+    008 [label="逐渐增大 SF"];
+    009 [label="达到 SF 分裂阈值"];
+    010 [label="当前 Region 分裂"];
+    011 [label="当前 Region 下线"];
+    012 [label="新的 Region 上线\n被 HMaster => HRegionServer"];
+
+    000 -> 001 -> 002 -> 003 -> 004 -> 005 -> 006;
+    006 -> 007 -> 008 -> 009 -> 010 -> 011 -> 012;
+
+    {rank=same;
+        001, 002, 003;
+    };
+
+    {rank=same;
+        004, 005, 006, 007;
+    };
+
+    {rank=same;
+        008, 009, 010;
+    };
+
+    {rank=same;
+        011, 012;
+    };
+
+}
