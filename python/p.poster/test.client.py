@@ -26,6 +26,7 @@ def demo1():
     # Create the Request object
     request = urllib2.Request(UPLOAD_URL, datagen, headers)
     # Actually do the request, and get the response
+    # print datagen
     print headers
     print urllib2.urlopen(request).read()
 
@@ -38,6 +39,7 @@ def demo2():
     params = {'file': open("test.client.py", "rb"), 'name': 'upload test'}
     datagen, headers = poster.encode.multipart_encode(params)
     request = urllib2.Request(UPLOAD_URL, datagen, headers)
+    # print datagen
     print headers
     print urllib2.urlopen(request).read()
 
