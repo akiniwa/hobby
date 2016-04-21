@@ -2,11 +2,13 @@
 """
 linear algebra
 ==============
+
 is there anything more useless or less useful than algebra? -- billy connolly
 
 """
 
 import math
+from functools import partial
 
 
 def vector_add(v, w):
@@ -108,3 +110,41 @@ def make_matirx(num_rows, num_cols, entry_fn):
 def is_diagonal(i, j):
     """ 1's on the diagonal, 0's everywhere else"""
     return 1 if i == j else 0
+
+
+if __name__ == '__main__':
+    height_weight_age = [70,   # inches
+                         170,  # pounds
+                         40]    # years
+
+    grades = [95,  # exam1
+              80,  # exam2
+              75,  # exam3
+              60]   # exam4
+
+    print vector_add([1, 2], [2, 1])
+
+    A = [[1, 2, 3],
+         [4, 5, 6]]
+
+    B = [[1, 2],
+         [3, 4],
+         [5, 6]]
+
+    print shape(A)
+    print shape(B)
+
+    identity_matrix = make_matirx(5, 5, is_diagonal)
+    print identity_matrix
+
+    friendships = [(0, 1), (0, 2), (1, 2), (1, 3), (2, 3), (3, 4),
+                   (4, 5), (5, 6), (5, 7), (6, 8), (7, 8), (8, 9)]
+
+    def is_friends(i, j):
+        """(i, j) or (j, i) in friendships"""
+        return 1 if (i, j) in friendships or (j, i) in friendships else 0
+
+    friendships_matrix = make_matirx(10, 10, is_friends)
+    print friendships_matrix
+    print friendships_matrix[0][2] == 1
+    print friendships_matrix[0][8] == 1
