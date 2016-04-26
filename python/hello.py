@@ -3,32 +3,26 @@
 import math
 
 
-def minute_seg():
+def minute_seg(step):
+    data = minute_sum(step, is_print=False)
+    data_seg = {}
+    for i in range(0, 1440 - step):
+        data_seg[str(i)] = data[str(i)] + '-' + data[str(i+step)]
+        print i, data_seg[str(i)]
+    # print data_seg
+
+
+def minute_sum(step, is_print):
     data = {}
     for i in range(0, 1440):
         h = i / 60
-        # m = i % 60
-        m = 0
-        d = "{}:{}-{}:{}".format(str(h).zfill(2),
-                                 str(m).zfill(2),
-                                 str(h+1).zfill(2),
-                                 str(m).zfill(2))
+        m = i % 60
+        m = m - m % step
+        d = "{}:{}".format(str(h).zfill(2), str(m).zfill(2))
+        if is_print:
+            print i, d
         data[str(i)] = d
+    return data
 
-    print data
-
-
-def minute_sum():
-    data = {}
-    for i in range(0, 1440):
-        h = i / 60
-        m = i % 60 / 10
-        # print i, m
-        d = "{}:{}0".format(str(h).zfill(2), m)
-        data[str(i)] = d
-
-    print data
-
-
-# minute_seg()
-minute_sum()
+# minute_seg(3)
+minute_sum(3, is_print=True)

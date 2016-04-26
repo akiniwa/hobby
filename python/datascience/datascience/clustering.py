@@ -16,7 +16,7 @@ class KMeans:
 
     def __init__(self, k):
         self.k = k
-        self.mean = None
+        self.means = None
 
     def classify(self, input):
         """return the index of the cluster closest to the input"""
@@ -36,7 +36,7 @@ class KMeans:
                 return
 
             # otherwise keep the new assignments
-            assignments = new_assignment
+            assignments = new_assignments
 
             # compute new means based on the new assignments
             for i in range(self.k):
@@ -45,7 +45,7 @@ class KMeans:
 
                 # make sure i_points is not empty avoid divide by 0
                 if i_points:
-                    self.mean[i] = vector_mean(i_points)
+                    self.means[i] = vector_mean(i_points)
 
 
 def squared_clustering_errors(inputs, k):
@@ -73,6 +73,9 @@ def choosing_k(inputs):
 
 
 def clustering_colors():
+    from datascience import clustering
+    import matplotlib.image as mping
+    import matplotlib.pyplot as plt
     # create a five-color version of an image
     # 1. choose five color
     # 2. assigning one of those colors to each pixel
@@ -82,8 +85,7 @@ def clustering_colors():
     # recolor the pixels in each cluster to the mean color
 
     # 1. read image into python
-    file_png = r'C:\images\image.png'
-    import matplotlib.image as mping
+    file_png = r'C:\images\compass.jpg'
     # behind the scenes `img` is a numpy array
     img = mping.imread(file_png)
 
@@ -94,17 +96,18 @@ def clustering_colors():
     pixels = [pixel for row in img for pixel in row]
 
     # 3. feed them to our cluster
-    clusterer = KMean(5)
+    clusterer = clustering.KMeans(5)
     clusterer.train(pixels)
+
+    print clusterer.means
 
     # 4. construct a new image with the same format
     def recolor(pixel):
         cluster = clusterer.classify(pixel)
-        return clusterer.means(cluster)
+        return clusterer.means[cluster]
 
     new_img = [[recolor(pixel) for pixel in row]
                for row in img]
-
     # 5. display it
     plt.imshow(new_img)
     plt.axis('off')
@@ -112,13 +115,15 @@ def clustering_colors():
 
 if __name__ == '__main__':
 
-    # get the same result
-    random.seed(0)
-    clusterer = KMeans(3)
-    clusterer.train(inputs)
-    print clusterer.means
+    # # get the same result
+    # random.seed(0)
+    # clusterer = KMeans(3)
+    # clusterer.train(inputs)
+    # print clusterer.means
 
-    # two meetups
-    ...
-    clusterer = KMeans(2)
-    ...
+    # # two meetups
+    # ...
+    # clusterer = KMeans(2)
+    # ...
+
+    clustering_colors()
