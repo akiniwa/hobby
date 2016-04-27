@@ -3,3 +3,4 @@
 *.pyc
 *.xls
 .ipynb_checkpoints/
+egg-info/
