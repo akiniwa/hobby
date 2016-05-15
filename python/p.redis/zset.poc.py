@@ -5,7 +5,7 @@ import time
 from datetime import datetime, timedelta
 
 DAYS = 10
-# $ docker run -p 127.0.0.1:6379:6379 --name gredis -d redis
+# $ docker run -p 6379:6379 --name gredis -d redis
 conn = redis.Redis(host='localhost', port=6379, db=1)
 
 
