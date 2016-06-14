@@ -4,8 +4,9 @@
 import os
 import Image
 
-pdf_dir = 'D:\\ebooks\\zzz'
-img_dir = os.path.join(pdf_dir, 'images')
+pdf_dir = 'D:\\ebooks\\data.store\\mq'
+# img_dir = os.path.join(pdf_dir, 'images')
+img_dir = os.path.join('D:\\pic', 'images')
 command = 'C:\\xpdfbin-win-3.04\\bin64\\pdfimages.exe'
 
 
@@ -25,16 +26,16 @@ def pdf_to_ppm():
 
 def ppm_to_jpg():
     ppms = os.listdir(img_dir)
-    for count, ppm in enumerate(ppms):
-        (name, ext) = os.path.splitext(ppm)
-        if ".ppm" != ext:
+    for count, file in enumerate(ppms):
+        (name, ext) = os.path.splitext(file)
+        if not (file.endswith('.ppm') or file.endswith('pbm')):
             continue
         try:
-            im = Image.open(os.path.join(img_dir, ppm))
+            im = Image.open(os.path.join(img_dir, file))
             im.save(os.path.join(img_dir, name + '.png'))
-            # print "ok -", str(count).rjust(3, '0'), ppm
+            # print "ok -", str(count).rjust(3, '0'), file
         except IOError:
-            print "no -", str(count).rjust(3, '0'), ppm
+            print "no -", str(count).rjust(3, '0'), file
 
 
 def ppm_cleanup():
