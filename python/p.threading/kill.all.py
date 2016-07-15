@@ -23,6 +23,10 @@ def counter(name, count, queue):
             if not queue.empty() and KILL == queue.get(False):
                 queue.put(KILL)
                 break
+            if 0 == count:
+                queue.put(KILL)
+                logging.info(' thread %s done %s', name, count)
+                break
         except ArithmeticError:
             queue.put(KILL)
             logging.info(' thread %s exit %s', name, count)
