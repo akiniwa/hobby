@@ -13,19 +13,19 @@ base = 1000000000
 def hash_size_poc():
     """hash_size_poc"""
     print conn.info()
-    for skuid in range(310925):
-        conn.hset(key, str(base + skuid), time.time())
-    # {
-    #     "encoding": "hashtable",
-    #     "refcount": 1,
-    #     "lru_seconds_idle": 0,
-    #     "lru": 4453566,
-    #     "at": "0x7f0fafe608b0",
-    #     "serializedlength": 6184428,
-    #     "type": "Value"
-    # }
-    print conn.debug_object(key)
-    print conn.info()
-    conn.expire(key, 0)
+    # for skuid in range(310925):
+    #     conn.hset(key, str(base + skuid), time.time())
+    # # {
+    # #     "encoding": "hashtable",
+    # #     "refcount": 1,
+    # #     "lru_seconds_idle": 0,
+    # #     "lru": 4453566,
+    # #     "at": "0x7f0fafe608b0",
+    # #     "serializedlength": 6184428,
+    # #     "type": "Value"
+    # # }
+    # print conn.debug_object(key)
+    # print conn.info()
+    # conn.expire(key, 0)
 
 hash_size_poc()
