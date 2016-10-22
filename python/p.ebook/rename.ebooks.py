@@ -23,4 +23,5 @@ def rename_ebooks(path):
             shutil.move(fullname, newname)
 
 rename_ebooks(r'C:/Users/Administrator/Downloads')
+# rename_ebooks(r'/home/gree2/Downloads/')
 # rename_ebooks(r'/Users/hqlgree2/Downloads/')
