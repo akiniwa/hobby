@@ -1,0 +1,1 @@
+docker exec -ti mysql2 sh -c "mysql -uroot -p"

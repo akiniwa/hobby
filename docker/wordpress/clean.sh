@@ -1,0 +1,1 @@
+docker stop gwordpress; docker rm gwordpress;
