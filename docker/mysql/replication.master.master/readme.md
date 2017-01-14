@@ -4,10 +4,15 @@
 
     1. folder
 
-            server#/backup
-            server#/data
-            server#/log
-            server#/conf.d
+            master1/backup
+            master1/data
+            master1/log
+            master1/conf.d
+
+            master2/backup
+            master2/data
+            master2/log
+            master2/conf.d
 
     1. config master1
 
@@ -59,37 +64,49 @@
 
 1. launch nodes
 
-    1. node1
+    1. master1
 
-            $ docker run --name mysql1 -e MYSQL_ROOT_PASSWORD=creepy -e MYSQL_DATABASE=creepy -dit -p 33061:3306 -v /opt2/mysql/master1/conf.d:/etc/mysql/mysql.conf.d/   -v /opt2/mysql/master1/data:/var/lib/mysql -v /opt2/mysql/master1/log:/var/log/mysql -v /opt2/mysql/master1/backup:/backup -h  mysql1 mysql
+            $ docker run --name master1 \
+                -e MYSQL_ROOT_PASSWORD=creepy \
+                -e MYSQL_DATABASE=creepy \
+                -dit -p 33061:3306 \
+                -v `pwd`/master1/conf.d:/etc/mysql/mysql.conf.d/ \
+                -v `pwd`/master1/data:/var/lib/mysql \
+                -v `pwd`/master1/log:/var/log/mysql \
+                -v `pwd`/master1/backup:/backup \
+                -h master1 mysql
 
-    1. node2
 
-            $ docker run --name mysql2  <strong>--link mysql1</strong> -e MYSQL_ROOT_PASSWORD=creepy -e MYSQL_DATABASE=creepy -dit -p 33062:3306 -v /opt2/mysql/master2/conf.d:/etc/mysql/mysql.conf.d/   -v /opt2/mysql/master2/data:/var/lib/mysql -v /opt2/mysql/master2/log:/var/log/mysql -v /opt2/mysql/master2/backup:/backup -h  mysql2 mysql
+    1. master2
 
-1. link node1 with node2
+            $ docker run --name master2 --link master1 \
+                -e MYSQL_ROOT_PASSWORD=creepy \
+                -e MYSQL_DATABASE=creepy \
+                -dit -p 33062:3306 \
+                -v `pwd`/master2/conf.d:/etc/mysql/mysql.conf.d/ \
+                -v `pwd`/master2/data:/var/lib/mysql \
+                -v `pwd`/master2/log:/var/log/mysql \
+                -v `pwd`/master2/backup:/backup \
+                -h master2 mysql
+
+1. link master1 with master2
 
     1. link
 
-            # find out IP Address of mysql2
-            $ mysql2ip=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' mysql2)
-
-            # Append the new IP as new host entry in mysql1's host file.
-            $ docker exec -i mysql1 sh -c "echo '$mysql2ip mysql2 mysql2' >> /etc/hosts"
-
-            # Check if the above command worked
-            $ docker exec -i mysql1 sh -c "cat /etc/hosts"
+            $ master2ip=$(docker inspect --format '{{ .NetworkSettings.IPAddress }}' master2)
+            $ docker exec -i master1 sh -c "echo '$master2ip master2 master2' >> /etc/hosts"
+            $ docker exec -i master1 sh -c "cat /etc/hosts"
 
     1. check
 
-            $ docker exec -ti mysql2 sh -c "ping mysql1"
-            $ docker exec -ti mysql1 sh -c "ping mysql2"
+            $ docker exec -ti master1 sh -c "ping master2"
+            $ docker exec -ti master2 sh -c "ping master1"
 
 1. create replication users
 
-    1. node1
+    1. master1
 
-            $ docker exec -ti mysql1 sh -c "mysql -uroot -p"
+            $ docker exec -ti master1 sh -c "mysql -uroot -p"
             Enter password:
             Welcome to the MySQL monitor.  Commands end with ; or \g.
             Your MySQL connection id is 2
@@ -128,9 +145,9 @@
             +---------------+-------+
             1 row in set (0.01 sec)
 
-    1. node2
+    1. master2
 
-            $ docker exec -ti mysql2 sh -c "mysql -uroot -p"
+            $ docker exec -ti master2 sh -c "mysql -uroot -p"
             Enter password:
             Welcome to the MySQL monitor.  Commands end with ; or \g.
             Your MySQL connection id is 2
@@ -171,23 +188,23 @@
 
 1. setup replication source
 
-    1. node1
+    1. master1
 
-            $ docker exec -ti mysql2 sh -c "mysql -uroot -p"
+            $ docker exec -ti master2 sh -c "mysql -uroot -p"
             Enter password:
             mysql> stop slave; 
-            mysql> CHANGE MASTER TO MASTER_HOST = 'mysql1', MASTER_USER = 'replicator', 
+            mysql> CHANGE MASTER TO MASTER_HOST = 'master1', MASTER_USER = 'replicator', 
                 -> MASTER_PASSWORD = 'creepy', MASTER_LOG_FILE = 'mysql-bin.000003', 
                 -> MASTER_LOG_POS = 154; 
             mysql> start slave;
             mysql> show slave status\g
 
-    1. node2
+    1. master2
 
-            $ docker exec -ti mysql1 sh -c "mysql -uroot -p"
+            $ docker exec -ti master1 sh -c "mysql -uroot -p"
             Enter password:
             mysql> stop slave; 
-            mysql> CHANGE MASTER TO MASTER_HOST = 'mysql2', MASTER_USER = 'replicator', 
+            mysql> CHANGE MASTER TO MASTER_HOST = 'master2', MASTER_USER = 'replicator', 
                 -> MASTER_PASSWORD = 'creepy', MASTER_LOG_FILE = 'mysql-bin.000003',
                 -> MASTER_LOG_POS = 154; 
             mysql> start slave;
@@ -195,24 +212,24 @@
 
 1. testing master-master replication
 
-    1. create table in `creepy` database in node1 check node2
+    1. create table in `creepy` database in master1 check master2
        
-            $ docker exec -ti mysql1 sh -c "mysql -uroot -p"
+            $ docker exec -ti master1 sh -c "mysql -uroot -p"
             Enter password:
             mysql> use creepy;
             mysql> create table students(`id` int, `name` varchar(20));
 
-            $ docker exec -ti mysql2 sh -c "mysql -uroot -p"
+            $ docker exec -ti master2 sh -c "mysql -uroot -p"
             Enter password:
             mysql> show tables in creepy;
 
-    1. remove table from node2 and check node1
+    1. remove table from master2 and check master1
 
-            $ docker exec -ti mysql2 sh -c "mysql -uroot -p"
+            $ docker exec -ti master2 sh -c "mysql -uroot -p"
             Enter password:
             mysql> use creepy;
             mysql> drop table students;
 
-            $ docker exec -ti mysql1 sh -c "mysql -uroot -p"
+            $ docker exec -ti master1 sh -c "mysql -uroot -p"
             Enter password:
             mysql> show tables in creepy;

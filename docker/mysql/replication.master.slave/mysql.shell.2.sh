@@ -1,0 +1,1 @@
+docker exec -ti slave sh -c "mysql -uroot -p"

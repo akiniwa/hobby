@@ -1,4 +1,4 @@
-docker run --name mysql2 --link mysql1 \
+docker run --name master2 --link master1 \
     -e MYSQL_ROOT_PASSWORD=creepy \
     -e MYSQL_DATABASE=creepy \
     -dit -p 33062:3306 \
@@ -6,4 +6,4 @@ docker run --name mysql2 --link mysql1 \
     -v `pwd`/master2/data:/var/lib/mysql \
     -v `pwd`/master2/log:/var/log/mysql \
     -v `pwd`/master2/backup:/backup \
-    -h  mysql2 mysql
+    -h master2 mysql

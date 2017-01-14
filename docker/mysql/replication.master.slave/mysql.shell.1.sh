@@ -1,0 +1,1 @@
+docker exec -ti master sh -c "mysql -uroot -p"
