@@ -5,6 +5,8 @@
 *.jpg
 *.jpeg
 *.png
+*.doc
+*.docx
 data/
 .ipynb_checkpoints/
 egg-info/
