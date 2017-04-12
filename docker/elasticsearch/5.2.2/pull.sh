@@ -1,0 +1,1 @@
+docker pull elasticsearch:5.2.2

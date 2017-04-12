@@ -3,7 +3,8 @@
 from time import sleep
 from py2neo import Graph, Node, Relationship
 
-graph = Graph(host='localhost', password='node')
+graph = Graph(host='dc')
+# graph = Graph(host='localhost', password='node')
 # data = graph.data('MATCH (u:User) RETURN u limit 5')
 
 # print data
@@ -27,6 +28,7 @@ def cleanup():
 
 def get_areas():
     """get_areas"""
+    print('gen area data')
     with open('area.code.dat') as f:
         lines = f.readlines()
 
@@ -48,7 +50,7 @@ def get_areas():
 
 def create_nodes():
     """create_nodes"""
-
+    print('create nodes')
     tx = graph.begin()
 
     for (code, name, pcode) in get_areas():
@@ -62,6 +64,7 @@ def create_nodes():
 
 def create_relationships():
     """create_relationships"""
+    print('create rels')
     graph.run("""
         MATCH (a:Area)
         MATCH (b:Area {code:a.pcode})
@@ -69,6 +72,6 @@ def create_relationships():
         """)
 
 if __name__ == '__main__':
-    # cleanup()
+    cleanup()
     create_nodes()
     create_relationships()
