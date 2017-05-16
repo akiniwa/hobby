@@ -9,8 +9,8 @@ def kafka_consumer():
     from kafka import KafkaConsumer
 
     # To consume messages
-    consumer = KafkaConsumer('topic',
-                             group_id='my-group',
+    consumer = KafkaConsumer('glances',
+                             # group_id='my-group',
                              bootstrap_servers=[KAFKA_SERVER])
     for message in consumer:
         # message value is raw byte string -- decode if necessary!
