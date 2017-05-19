@@ -1,6 +1,9 @@
 #! coding: utf-8
 '''kafka-python usage'''
 
+# ./start-kafka-shell.sh 192.168.0.108 192.168.0.108:2181
+# bin/kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list 192.168.0.108:9092 --topic glances --time -1
+
 KAFKA_SERVER = '192.168.0.108:9092'
 
 
